@@ -75,24 +75,3 @@ dynoSrc eats its own dog food in while developing.  Here is a simple run down of
 * Much of this feels like it could be complimented with a Grunt task.
 * Write client unit tests against dynoSrc.js ;)
 * Bit mask resources in cookie to not store entire resource name
-
-
-## Special Featurez
-
-This next section is NOT part of this module, but a special route build into the node knockout project we crated when making this module.  The purpose of this code is to show how easy it is to product diff's on the fly. 
-
-    var query = url.parse(req.url, true).query;
-    async.parallel([
-      function(next) {
-        git.getGitHubRaw(query.repo, query.file, query.from, next);
-      },
-      function(next) {
-        git.getGitHubRaw(query.repo, query.file, query.to, next);
-      }
-    ], function(err, files) {
-      git.fileDiff(files[0], files[1]).pipe(res);
-    });
-
-You can see this in action here
-/github/diff?repo=chjj/marked&file=package.json&from=122dde&to=46eaa2
-
