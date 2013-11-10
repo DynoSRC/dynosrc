@@ -1,8 +1,10 @@
 # [DynoSrc](http://www.dinosrc.it)
 
-Minimize HTTP Requests - DynoSRC loads JavaScript files inline in your HTML response, then stores them in localStorage. You can even inline the DynoSRC client lib, eliminating all HTTP requests for JavaScript on your site.
+### Minimize HTTP Requests
+DynoSRC loads JavaScript files inline in your HTML response, then stores them in localStorage. You can even inline the calls to the DynoSRC client lib in your HTML response, eliminating all HTTP requests for JavaScript on your site.
 
-Differential Updates - Now, if a JS asset on your site changes, your users will have to download it again even though just a fraction of it changed. DynoSRC sends down differentials updates, so changes to large files don't require full downloads.
+### Differential Updates
+Normally, if a JS asset on your site changes, your users will have to download the entire file again even though just a fraction of it changed. DynoSRC sends down differentials updates so changes to large files don't require full downloads.
 
 ### Getting Started
 
@@ -48,20 +50,19 @@ Differential Updates - Now, if a JS asset on your site changes, your users will 
       });
     });
 
-#Documentation
+# Documentation
 
-####What's going on under the hood
+#### What's going on under the hood
 
 * We are relying on forking out to a child_process and using the git avaliable to the system's user. 
 
 
-####   Apply Patches in Client
+#### Apply Patches in Client
 
     dynoSrc.apply('my-cool-module', '0.1.2', '...diff...');
 
 
-
-#DEV mode FTW
+# DEV mode FTW
 
 dynoSrc eats its own dog food in while developing.  Here is a simple run down of what the middleware will do on every page load.
 
