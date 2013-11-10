@@ -1,0 +1,23 @@
+{
+  "name": "dynosrc",
+  "version": "0.0.1",
+  "description": "Send static files to clients with patch files like what!",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "underscore": "1.5.2",
+    "diff": "~1.0.7",
+    "tap": "0.3.3",
+    "async": "~0.2.9",
+    "cookies": "~0.3.6",
+    "mkdirp": "*",
+    "Deferred": "*",
+    "esformatter": "0.0.11",
+    "request": "2.27.0"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}
