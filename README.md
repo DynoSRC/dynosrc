@@ -1,12 +1,16 @@
 # [DynoSrc](http://www.dinosrc.it)
 
-### Minimize HTTP Requests
+DynoSRC is a general solution for efficiently delivering JS resources to clients, using diff-based updates as assets change over time.
+
+## Benefits
+
+#### Minimize HTTP Requests
 DynoSRC loads JavaScript files inline in your HTML response, then stores them in localStorage. You can even inline the calls to the DynoSRC client lib in your HTML response, eliminating all HTTP requests for JavaScript on your site.
 
-### Differential Updates
+#### Differential Updates
 Normally, if a JS asset on your site changes, your users will have to download the entire file again even though just a fraction of it changed. DynoSRC sends down differentials updates so changes to large files don't require full downloads.
 
-### Getting Started
+## Getting Started
 
 #### Install DynoSrc
 
@@ -50,25 +54,28 @@ Normally, if a JS asset on your site changes, your users will have to download t
       });
     });
 
-# Documentation
+##### This will produce corresponding "patch" deltas in your HMTL
 
-#### What's going on under the hood
-
-* We are relying on forking out to a child_process and using the git avaliable to the system's user. 
-
-
-#### Apply Patches in Client
-
+    //inserted from dynSrc.getPatches
     dynoSrc.apply('my-cool-module', '0.1.2', '...diff...');
 
 
-# DEV mode FTW
+## How does it work?
 
-dynoSrc eats its own dog food in while developing.  Here is a simple run down of what the middleware will do on every page load.
+* git diff
+  * We are relying on forking out to a child_process.
+  * This means the process you are running node with must have access to git.
+  * The reason we are not using js-git for this was because that feature was not implemented yet.
+* DEV mode FTW
+  * dynoSrc eats its own dog food in while developing.  We really felt this was an important feature so this isn't just a build tool for "production".  This way any bugs that come from using this strategy will appear earlier in the dev cycle, rather than in production.  Here is a simple run down of what the middleware will do on every page load.
+    * Look at the resources in your cookie
+    * Look at every local resource in your repo that needs to be served
+    * Determine if there were changes (due to direct file change via a human, or maybe grunt rewrote them)
+    * Write the changed file to a scratch area with an epoc timestamp
+    * Compute a diff from the last page load
+    * Send ONLY the diff
 
-* wef
-
-## Project TODO's
+## TODOs
 
 * DEV mode WILL eat your entire HD.  Someone needs to write a thing to clean up all the things :)
 * Move sever oriented unit tests out of NodeKnockout repo and into public dynoSrc repo.
