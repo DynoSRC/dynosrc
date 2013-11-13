@@ -54,7 +54,7 @@ Normally, if a JS asset on your site changes, your users will have to download t
       });
     });
 
-##### This will produce corresponding "patch" deltas in your HMTL
+##### This will produce corresponding "patch" deltas in your HTML
 
     //inserted from dynSrc.getPatches
     dynoSrc.apply('my-cool-module', '0.1.2', '...diff...');
