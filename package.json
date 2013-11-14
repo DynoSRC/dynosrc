@@ -1,6 +1,6 @@
 {
   "name": "dynosrc",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Send static files to clients with patch files like what!",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "async": "~0.2.9",
     "cookies": "~0.3.6",
     "mkdirp": "*",
+    "bower" : "1.2.7",
     "Deferred": "*",
     "esformatter": "0.0.11",
     "request": "2.27.0"

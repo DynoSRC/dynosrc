@@ -5,6 +5,8 @@ var async = require('async'),
   middleware = require('./lib/middleware'),
   sources = require('./lib/sources'),
   errors = require('./lib/errors'),
+  git = require('./lib/git'),
+  fs = require('fs'),
 
   jsSafeString = function(str) {
     return str.replace(/\\/g, '\\\\')
@@ -153,6 +155,10 @@ _.extend(DynoSrc.prototype, {
     }
 
     sources[name] = source;
+  },
+  git : git,
+  readMe : function(cb) {
+    fs.readFile(__dirname + '/README.md', 'utf8', cb);
   }
 });
 
