@@ -5,6 +5,7 @@ var git = require('dynosrc').git;
 var util = require('util');
 var async = require('async');
 
+git.setOutputDirectory(__dirname+"/../tmp/");
 
 test("Bower test", function(t) {
 
