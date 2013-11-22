@@ -1,3 +1,5 @@
+[![NPM](https://nodei.co/npm/dynosrc.png?downloads=true&stars=true)](https://nodei.co/npm/dynosrc/)
+
 # [DynoSrc](http://www.dinosrc.it)
 
 DynoSRC is a general solution for efficiently delivering JS resources to clients, using diff-based updates as assets change over time.
