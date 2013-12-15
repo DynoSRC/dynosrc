@@ -8,6 +8,9 @@ var async = require('async'),
   git = require('./lib/git'),
   fs = require('fs'),
 
+  clientLib = _.template(fs.readFileSync(__dirname + '/dynoSrc-core.js').toString()),
+  packageVersion = require('./package.json').version,
+
   jsSafeString = function(str) {
     return str.replace(/\\/g, '\\\\')
       .replace(/\u0008/g, '\\b')
@@ -35,15 +38,18 @@ var async = require('async'),
       return json;
     },
     'js': function(patch) {
-      var jsFn = patch.from
-        ? config.scriptApplyFn
-        : config.scriptAddFn;
-
-      return jsFn + '('
-        + '"' + patch.id + '",'
-        + '"' + patch.to + '",'
-        + '"' + jsSafeString(patch.contents) + '"'
-        + ');';
+      if (patch.contents) {
+        return config.scriptAddFn + '('
+          + '"' + patch.id + '",'
+          + '"' + patch.to + '",'
+          + '"' + jsSafeString(patch.contents) + '"'
+          + ');';
+      } else {
+        return config.scriptLoadFn + '('
+          + '"' + patch.id + '",'
+          + '"' + patch.to + '"'
+          + ');';
+      }
     },
     'script': function(patch) {
       return '<script>' + this.js(patch) + '</script>';
@@ -54,9 +60,15 @@ var async = require('async'),
   config = {
     dev: false,
     
+    // client-shared config options
     cookieName: '_ds',
-    scriptApplyFn: 'dynoSrc.apply',
+    cookiePairSeparator: '|',
+    cookieRevSeparator: '@',
+    localStoragePrefix: 'dynosrc.',
     scriptAddFn: 'dynoSrc.add',
+    scriptLoadFn: 'dynoSrc.load',
+    plugins: ['cookie', 'diff'],
+    
     maxAge: 2592000,
 
     outputDir: __dirname + '/tmp',
@@ -101,8 +113,22 @@ function onPatch(fmt, cb, err, res) {
   return cb(null, formatter(res));
 }
 
-function DynoSrc() {
+function DynoSrc(globals) {
   this.config = _.clone(config, true);
+
+  if (globals) {
+    this.globals(globals);
+  }
+
+  this.config.plugins.forEach(function(plugin) {
+    this.asset('dynoSrc-' + plugin, {
+      source: 'core',
+      // tie asset to npm version so if package is updated, updated core lib
+      // assets will be automatically delivered to clients
+      head: packageVersion
+    });
+  }, this);
+
   // there is a hole where `sources` are techincally going to be shared
   // amongst all instances but that should be OK for now
 }
@@ -110,8 +136,7 @@ function DynoSrc() {
 _.extend(DynoSrc.prototype, {
   factory: function(globals) {
     // return new instance
-    var instance = new DynoSrc();
-    instance.globals(globals);
+    var instance = new DynoSrc(globals);
     return instance;
   },
   globals: function(options) {
@@ -140,13 +165,20 @@ _.extend(DynoSrc.prototype, {
   },
   getPatches : function(req, options, cb) {
     var format = options.format || 'script',
-      patches = req.getDynoSrcPatches(options.patches);
-
-    console.log('patches = ', patches);
+      desiredPatches = options.patches
+        ? options.patches.concat(this.config.plugins.map(function(p) { return 'dynoSrc-' + p; }))
+        : null,
+      patches = req.getDynoSrcPatches(desiredPatches);
 
     return async.parallel(_.map(patches, function(patch) {
       return this.patch.bind(this, patch.id, patch.from, patch.to, format);
     }, this), cb);
+  },
+  getClientLib : function() {
+    // TODO: minification support
+    return '<script>' 
+      + clientLib(this.config.globals()) 
+      + '</script>';
   },
   middleware: middleware,
   defineSource: function(name, source) {
