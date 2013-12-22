@@ -1,11 +1,11 @@
 var test = require('tap').test;
 var fs = require('fs');
 var basename = require('path').basename;
-var git = require('dynosrc').git;
 var util = require('util');
 var async = require('async');
+var git = require('../lib/git');
 
-git.setOutputDirectory(__dirname+"/../tmp/");
+git.setOutputDirectory(__dirname + '/../tmp/');
 
 test("Bower test", function(t) {
 
