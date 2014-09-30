@@ -1,7 +1,7 @@
 [![Stories in Ready](https://badge.waffle.io/dynosrc/dynosrc.png?label=ready)](https://waffle.io/dynosrc/dynosrc)  
 [![NPM](https://nodei.co/npm/dynosrc.png?downloads=true&stars=true)](https://nodei.co/npm/dynosrc/)
 
-# [DynoSrc](http://www.dinosrc.it)
+# [DynoSrc](http://www.dynosrc.com)
 
 DynoSRC is a general solution for efficiently delivering JS resources to clients, using diff-based updates as assets change over time.
 
