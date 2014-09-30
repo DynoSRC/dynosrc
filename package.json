@@ -7,7 +7,7 @@
     "start": "node index.js",
     "test": "node ./node_modules/tap/bin/tap.js --stderr ./test/*.js --tap"
   },
-  "homepage": "http://dinosrc.it",
+  "homepage": "http://www.dynosrc.com",
   "repository": {
     "type": "git",
     "url": "git://github.com/DynoSRC/dynosrc.git"
